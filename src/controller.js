@@ -51,9 +51,9 @@ function ChartController($scope, $timeout) {
 
     this.addDataLabelsFormatFunction = addDataLabelsFormatFunction;
     this.addTransitionDuration = addTransitionDuration;
-    
-    this.addSubchartOnBrushFunction = addSubchartOnBrushFunction;    
-    this.addOnZoomEndFunction = addOnZoomEndFunction;    
+
+    this.addSubchartOnBrushFunction = addSubchartOnBrushFunction;
+    this.addOnZoomEndFunction = addOnZoomEndFunction;
 
     this.addGauge = addGauge;
     this.addGaugeLabelFormatFunction = addGaugeLabelFormatFunction;
@@ -182,14 +182,14 @@ function ChartController($scope, $timeout) {
         if ($scope.subchartOnBrushFunction){
             config.subchart = config.subchart || {};
             config.subchart.onbrush = $scope.subchartOnBrushFunction;
-        }           
+        }
         if ($scope.enableZoom && $scope.enableZoom === "true") {
             config.zoom = {"enabled": true};
         }
         if ($scope.onZoomEndFunction){
             config.zoom = config.zoom || {};
             config.zoom.onzoomend = $scope.onZoomEndFunction;
-        }          
+        }
         config.axis = config.axis || $scope.axis;
         if ($scope.xTick) {
             config.axis.x.tick = $scope.xTick;
@@ -348,6 +348,10 @@ function ChartController($scope, $timeout) {
 
         $scope.config = config;
 
+        if(!$scope.enableUnload) {
+          $scope.enableUnload = false;
+        }
+
         if ($scope.chartData && $scope.chartColumns) {
             $scope.$watch('chartData', function () {
                 loadChartData();
@@ -384,14 +388,14 @@ function ChartController($scope, $timeout) {
     function addDataLabelsFormatFunction(dataLabelsFormatFunction) {
         $scope.dataLabelsFormatFunction = dataLabelsFormatFunction;
     }
-    
+
     function addSubchartOnBrushFunction(subchartOnBrushFunction) {
         $scope.subchartOnBrushFunction = subchartOnBrushFunction;
     }
-    
+
     function addOnZoomEndFunction(onZoomEndFunction) {
         $scope.onZoomEndFunction = onZoomEndFunction;
-    }    
+    }
 
     function addChartCallbackFunction(chartCallbackFunction) {
         $scope.chartCallbackFunction = chartCallbackFunction;
@@ -697,7 +701,9 @@ function ChartController($scope, $timeout) {
                 $scope.chartCallbackFunction($scope.chart);
             }
         } else {
-            $scope.config.data.unload = true;
+            if($scope.enableUnload){
+              $scope.config.data.unload = true;
+            }
             $scope.chart.load($scope.config.data);
         }
     }

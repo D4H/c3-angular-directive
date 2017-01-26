@@ -1,6 +1,6 @@
-/*! c3-angular - v1.3.1 - 2016-08-04
+/*! c3-angular - v1.3.1 - 2017-01-26
 * https://github.com/jettro/c3-angular-directive
-* Copyright (c) 2016 ; Licensed  */
+* Copyright (c) 2017 ; Licensed  */
 angular.module('gridshore.c3js.chart', []);
 angular.module('gridshore.c3js.chart')
     .directive('chartAxes', ChartAxes);
@@ -730,7 +730,7 @@ angular.module('gridshore.c3js.chart')
  *   `c3chart` is the main directive to create the chart. Use it to set the padding properties and include the other directives. You can also register the callback in this directive that receives the initialised chart object.
  *
  *   When using multiple charts in the same page you need to provide unique bind-id parameters.
- * 
+ *
  * Restrict To:
  *   Element
  *
@@ -738,19 +738,19 @@ angular.module('gridshore.c3js.chart')
  *   -
  *
  * @param {Number} padding-top Set the top padding of the chart.
- *   
+ *
  *   {@link http://c3js.org/reference.html#padding-top| c3js doc}
- * 
+ *
  * @param {Number} padding-bottom Set the bottom padding of the chart.
  *
  *   {@link http://c3js.org/reference.html#padding-bottom| c3js doc}
  *
  * @param {Number} padding-right Set the right padding of the chart.
- * 
+ *
  *   {@link http://c3js.org/reference.html#padding-right| c3js doc}
  *
  * @param {Number} padding-left Set the left padding of the chart.
- * 
+ *
  *   {@link http://c3js.org/reference.html#padding-left| c3js doc}
  *
  * @param {String} empty-label Set text displayed when empty data.
@@ -758,51 +758,51 @@ angular.module('gridshore.c3js.chart')
  *   {@link http://c3js.org/reference.html#data-empty-label-text| c3js doc}
  *
  * @param {String} bind-id Id of the chart, needs to be unique when using multiple charts on one page.
- * 
+ *
  *   {@link http://c3js.org/reference.html#bindto| c3js doc}
  *
  * @param {String} sort-data You can enter three different versions: asc, desc, null. Using this sorting you can change the order of stacking and the order of the pieces of a pie or donut.
- * 
+ *
  *   {@link http://c3js.org/reference.html#data-order| c3js doc}
  *
  * @param {Boolean} show-labels Configure to show the labels 'true' or not, default is false.
- * 
+ *
  *   {@link http://c3js.org/reference.html#data-labels| c3js doc}
  *
  * @param {Function} labels-format-function Provide a function to format the labels.
- * 
+ *
  *   {@link http://c3js.org/reference.html#data-labels-format| c3js doc}
  *
  * @param {Boolean} show-subchart Configure to show the subchart or not (default).
- * 
+ *
  *   {@link http://c3js.org/reference.html#subchart-show| c3js doc}
  *
  * @param {Function} subchart-on-brush-function Use this if you want to do something after brush on subchart
- * 
+ *
  *   {@link http://c3js.org/reference.html#subchart-onbrush| c3js doc}
  *
  * @param {Boolean} enable-zoom Configure to enable zoom in the chart or not (defaut).
- * 
+ *
  *   {@link http://c3js.org/reference.html#zoom-enabled| c3js doc}
  *
  * @param {Function} on-zoom-end-function Use this if you want to do something after zooming
- * 
- *   {@link http://c3js.org/reference.html#zoom-onzoomend| c3js doc} 
+ *
+ *   {@link http://c3js.org/reference.html#zoom-onzoomend| c3js doc}
  *
  * @param {Array} chart-data Provide a reference to a collection that can contain dynamic data. When providing this attrbiute you also need to provide the chart-columns attribute.
- * 
+ *
  *   Array consisting of objects with values for the different columns: [{"data1":10,"data2":20},{"data1":50,"data2":60}]
  *
  * @param {Array} chart-columns Provide a reference to a collection that contains the columns. When providing this attrbiute you also need to provide the chart-data attribute.
- * 
+ *
  *   Array consisting of objects with some properties for the different columns: [{"id": "data1", "type": "line"}, {"id": "data2", "type": "bar"}]
  *
  * @param {Object} chart-x Provide information about the x column. Used when adding dynamic data to specify the field that contains the x data value.
- * 
+ *
  *   Object containing reference to the id of the x data field: {"id": "x", "name": "My Data points"}
  *
  * @param {Function} callback-function Use this if you want to interact with the chart object using the api
- * 
+ *
  *   {@link http://c3js.org/reference.html#api-focus| c3js doc}
  *
  * @param {Number} transition-duration Duration of transition (in milliseconds) for chart animation. If you specify 0, transitions will be disabled which is good for large datasets.
@@ -811,20 +811,22 @@ angular.module('gridshore.c3js.chart')
  *
  * @param {Object} initial-config Provide the initial config object to start the graph with.
  *
+ * @param {Object} enable-unload Unload the graph with each new piece of data
+ *
  * @example
  * Usage:
  *   <c3chart >
  *      <!-- sub elements -->
  *   </c3chart>
- * 
+ *
  * Example:
  *
  *   {@link http://jettro.github.io/c3-angular-directive/#examples}
- * 
+ *
  * Shows how to use dynamic data points.
- * 
+ *
  * <c3chart bindto-id="dynamicpie" chart-data="piePoints" chart-columns="pieColumns"/>
- * 
+ *
  *     $scope.piePoints = [{"data1": 70, "data2": 30, "data3": "100"}];
  *     $scope.pieColumns = [{"id": "data1", "type": "pie"}, {"id": "data2", "type": "pie"}, {
  *       "id": "data3",
@@ -882,8 +884,8 @@ function C3Chart ($timeout) {
             chartCtrl.addOnZoomEndFunction(scope.onZoomEndFunction());
         }
         if (attrs.subchartOnBrushFunction){
-          chartCtrl.addSubchartOnBrushFunction(scope.subchartOnBrushFunction());          
-        }         
+          chartCtrl.addSubchartOnBrushFunction(scope.subchartOnBrushFunction());
+        }
         if (attrs.callbackFunction) {
             chartCtrl.addChartCallbackFunction(scope.callbackFunction());
         }
@@ -906,10 +908,11 @@ function C3Chart ($timeout) {
             "bindto": "@bindtoId",
             "showLabels": "@showLabels",
             "labelsFormatFunction": "&",
-            "onZoomEndFunction": "&",            
+            "onZoomEndFunction": "&",
             "showSubchart": "@showSubchart",
             "subchartOnBrushFunction": "&",
             "enableZoom": "@enableZoom",
+            "enableUnload": "@enableUnload",
             "chartData": "=chartData",
             "chartColumns": "=chartColumns",
             "chartX": "=chartX",
@@ -1093,9 +1096,9 @@ function ChartController($scope, $timeout) {
 
     this.addDataLabelsFormatFunction = addDataLabelsFormatFunction;
     this.addTransitionDuration = addTransitionDuration;
-    
-    this.addSubchartOnBrushFunction = addSubchartOnBrushFunction;    
-    this.addOnZoomEndFunction = addOnZoomEndFunction;    
+
+    this.addSubchartOnBrushFunction = addSubchartOnBrushFunction;
+    this.addOnZoomEndFunction = addOnZoomEndFunction;
 
     this.addGauge = addGauge;
     this.addGaugeLabelFormatFunction = addGaugeLabelFormatFunction;
@@ -1224,14 +1227,14 @@ function ChartController($scope, $timeout) {
         if ($scope.subchartOnBrushFunction){
             config.subchart = config.subchart || {};
             config.subchart.onbrush = $scope.subchartOnBrushFunction;
-        }           
+        }
         if ($scope.enableZoom && $scope.enableZoom === "true") {
             config.zoom = {"enabled": true};
         }
         if ($scope.onZoomEndFunction){
             config.zoom = config.zoom || {};
             config.zoom.onzoomend = $scope.onZoomEndFunction;
-        }          
+        }
         config.axis = config.axis || $scope.axis;
         if ($scope.xTick) {
             config.axis.x.tick = $scope.xTick;
@@ -1390,6 +1393,10 @@ function ChartController($scope, $timeout) {
 
         $scope.config = config;
 
+        if(!$scope.enableUnload) {
+          $scope.enableUnload = false;
+        }
+
         if ($scope.chartData && $scope.chartColumns) {
             $scope.$watch('chartData', function () {
                 loadChartData();
@@ -1426,14 +1433,14 @@ function ChartController($scope, $timeout) {
     function addDataLabelsFormatFunction(dataLabelsFormatFunction) {
         $scope.dataLabelsFormatFunction = dataLabelsFormatFunction;
     }
-    
+
     function addSubchartOnBrushFunction(subchartOnBrushFunction) {
         $scope.subchartOnBrushFunction = subchartOnBrushFunction;
     }
-    
+
     function addOnZoomEndFunction(onZoomEndFunction) {
         $scope.onZoomEndFunction = onZoomEndFunction;
-    }    
+    }
 
     function addChartCallbackFunction(chartCallbackFunction) {
         $scope.chartCallbackFunction = chartCallbackFunction;
@@ -1739,11 +1746,14 @@ function ChartController($scope, $timeout) {
                 $scope.chartCallbackFunction($scope.chart);
             }
         } else {
-            $scope.config.data.unload = true;
+            if($scope.enableUnload){
+              $scope.config.data.unload = true;
+            }
             $scope.chart.load($scope.config.data);
         }
     }
 }
+
 angular.module('gridshore.c3js.chart')
     .directive('chartDonut', ChartDonut);
 /**
