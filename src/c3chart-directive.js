@@ -192,7 +192,7 @@ function C3Chart ($timeout) {
             "showSubchart": "@showSubchart",
             "subchartOnBrushFunction": "&",
             "enableZoom": "@enableZoom",
-            "enableUnload": "@enableUnload",
+            "enableUnload": "=enableUnload",
             "chartData": "=chartData",
             "chartColumns": "=chartColumns",
             "chartX": "=chartX",

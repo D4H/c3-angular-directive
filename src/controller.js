@@ -703,6 +703,8 @@ function ChartController($scope, $timeout) {
         } else {
             if($scope.enableUnload){
               $scope.config.data.unload = true;
+            } else {
+              delete $scope.config.data.unload;
             }
             $scope.chart.load($scope.config.data);
         }
