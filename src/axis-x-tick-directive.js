@@ -14,13 +14,13 @@ angular.module('gridshore.c3js.chart')
  *   chart-axis-x
  *
  * @param {Number} tick-count Specify the number of ticks on the x axis.
- *   
+ *
  *   {@link http://c3js.org/reference.html#axis-x-tick-count| c3js doc}
  * @param {Boolean} tick-culling Culling means not all ticks will be shown, for category data this is by default false, for other data true.
  *
  *   {@link http://c3js.org/reference.html#axis-x-tick-culling| c3js doc}
  * @param {Number} tick-culling-max Set the maximum number of ticks, if specified culling is by default true.
- * 
+ *
  *   {@link http://c3js.org/reference.html#axis-x-tick-culling-max| c3js doc}
  * @param {Boolean} tick-multiline Not sure what this does, not documented.
  *
@@ -59,7 +59,7 @@ angular.module('gridshore.c3js.chart')
  * @example
  * Usage:
  *   <chart-axis-x-tick tick-rotate="..." tick-count="..."/>
- * 
+ *
  * Example:
  *   {@link http://jettro.github.io/c3-angular-directive/#examples}
  *
@@ -155,12 +155,12 @@ function ChartAxisXTick() {
             }
         }
 
-        var format = attrs.format;
+        var format = attrs.tickFormat;
         if (format) {
             tick.format = d3.format(format);
         }
 
-        var formatTime = attrs.formatTime;
+        var formatTime = attrs.tickFormatTime;
         if (formatTime) {
             tick.format = d3.time.format(formatTime);
         }
