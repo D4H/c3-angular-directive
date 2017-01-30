@@ -694,7 +694,7 @@ function ChartController($scope, $timeout) {
         $scope.config.data.keys = $scope.jsonKeys;
         $scope.config.data.json = $scope.chartData;
 
-        if (!$scope.chartIsGenerated || $scope.regenerate) {
+        if (!$scope.chartIsGenerated || $scope.regenerate === 'true') {
             $scope.chart = c3.generate($scope.config);
             $scope.chartIsGenerated = true;
 
