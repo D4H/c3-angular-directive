@@ -911,8 +911,8 @@ function C3Chart ($timeout) {
             "onZoomEndFunction": "&",
             "showSubchart": "@showSubchart",
             "subchartOnBrushFunction": "&",
-            "enableZoom": "@enableZoom",
-            "enableUnload": "=enableUnload",
+            "regenerate": "@regenerate",
+            "enableUnload": "@enableUnload",
             "chartData": "=chartData",
             "chartColumns": "=chartColumns",
             "chartX": "=chartX",
@@ -1396,6 +1396,9 @@ function ChartController($scope, $timeout) {
         if(!$scope.enableUnload) {
           $scope.enableUnload = false;
         }
+        if(!$scope.regnerate) {
+          $scope.regnerate = false;
+        }
 
         if ($scope.chartData && $scope.chartColumns) {
             $scope.$watch('chartData', function () {
@@ -1736,7 +1739,7 @@ function ChartController($scope, $timeout) {
         $scope.config.data.keys = $scope.jsonKeys;
         $scope.config.data.json = $scope.chartData;
 
-        if (!$scope.chartIsGenerated) {
+        if (!$scope.chartIsGenerated || $scope.regenerate) {
             $scope.chart = c3.generate($scope.config);
             $scope.chartIsGenerated = true;
 
